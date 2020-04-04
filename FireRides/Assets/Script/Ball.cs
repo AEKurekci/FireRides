@@ -8,28 +8,33 @@ public class Ball : MonoBehaviour
     [SerializeField]public float ballSpeed = 2f;
     private Rigidbody rigidB;
     [SerializeField] Transform cameraHolder;
-    private Quaternion aimHolder;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] [Range(0, 1)] float volumeOfDeath;
     Vector3 tempVec;
     [Header("Walls")]
     [SerializeField] GameObject wallTop;
     [SerializeField] GameObject wallBottom;
     [SerializeField] GameObject wallFloor;
+    [SerializeField] Material wallMaterialBlue;
     [SerializeField] int wallNumber = 100;
-    [SerializeField] Vector3 wallPositionTop;
-    [SerializeField] Vector3 wallPositionBottom;
-    [SerializeField] Vector3 wallPositionFloor;
+    Vector3 wallPositionTop;
+    Vector3 wallPositionBottom;
+    Vector3 wallPositionFloor;
+    private float startingPointZ;
+    [Header("Circle")]
+    [SerializeField] GameObject circle;
     
 
     // Start is called before the first frame update
     void Start()
     {
         cameraHolder = Camera.main.transform.parent;
-        //aimHolder = transform.parent.transform.rotation;
         wallPositionTop = new Vector3(-1.5f, 70f, 156);
         wallPositionBottom = new Vector3(-1.5f, -70f, 156);
         wallPositionFloor = new Vector3(-450f, -83f, 156);
-        BuildWalls(wallTop,wallBottom,wallFloor);
+        BuildWalls(wallTop,wallBottom,wallFloor, circle);
         rigidB = GetComponent<Rigidbody>();
+        startingPointZ = transform.position.z;
     }
 
     // Update is called once per frame
@@ -37,6 +42,17 @@ public class Ball : MonoBehaviour
     {
         CameraMovement();
         rigidB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
+        if(transform.position.z > (wallTop.transform.localScale.z * (wallNumber - 20)) + startingPointZ)
+        {
+            BuildWalls(wallTop, wallBottom, wallFloor, circle);
+            startingPointZ = transform.position.z;
+        }
+        CheckViewFinder();
+    }
+
+    private void CheckViewFinder()
+    {
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -53,7 +69,10 @@ public class Ball : MonoBehaviour
         GetComponent<MeshRenderer>().enabled = false;
         transform.GetChild(1).GetComponent<ParticleSystem>().Play();
         transform.GetChild(0).GetComponent<ParticleSystem>().Stop();
+        Behaviour halo = (Behaviour)GetComponent("Halo");
+        halo.enabled = false;
         SetScore();
+        AudioSource.PlayClipAtPoint(deathSound, Camera.main.transform.position, volumeOfDeath);
         Invoke("GameOver", 1f);
     }
 
@@ -61,7 +80,8 @@ public class Ball : MonoBehaviour
     {
         if(PlayerPrefs.GetFloat("best") < transform.position.z/20)
         {
-            PlayerPrefs.SetFloat("best", transform.position.z/20);
+            string tempScore = (transform.position.z / 20).ToString("F1");
+            PlayerPrefs.SetFloat("best",float.Parse(tempScore));
         }
     }
 
@@ -74,7 +94,7 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void BuildWalls(GameObject up, GameObject down,GameObject floor)
+    private void BuildWalls(GameObject up, GameObject down,GameObject floor, GameObject circle)
     {
         float randomBottomY;
         float randomTopY;
@@ -92,15 +112,23 @@ public class Ball : MonoBehaviour
             wallPositionTop.y += randomTopY;
             wallPositionBottom.y += randomBottomY;
             wallPositionFloor.y += randomBottomY;
-            /*renk değişimi
+            //duvarı oluştur.
+            GameObject upO = Instantiate(up, wallPositionTop, Quaternion.identity);
+            GameObject downO = Instantiate(down, wallPositionBottom, Quaternion.identity);
+            GameObject floorO = Instantiate(floor, wallPositionFloor, Quaternion.identity);
+            //renk değişimi
             if (i % 2 == 0)
             {
-                up.GetComponent<MeshRenderer>().materials[0].color = Color.blue;
-            }*/
-            //duvarı oluştur.
-            Instantiate(up, wallPositionTop, Quaternion.identity);
-            Instantiate(down, wallPositionBottom, Quaternion.identity);
-            Instantiate(floor, wallPositionFloor, Quaternion.identity);
+                upO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
+                downO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
+                floorO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
+            }
+            if (i % 15 == 0 && i != 0)
+            {
+                Debug.Log(i);
+                wallPositionTop.y = 7f;
+                Instantiate(circle, wallPositionTop, Quaternion.identity);
+            }
             //duvarın y değerleri geri getirilir
             wallPositionBottom.y = tempWallBottom.y;
             wallPositionFloor.y = tempWallBottom.y;

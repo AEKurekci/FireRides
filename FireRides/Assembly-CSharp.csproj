@@ -69,7 +69,9 @@
     <Compile Include="Assets\Script\GameCanvas.cs" />
     <Compile Include="Assets\Script\GameOverCanvas.cs" />
     <Compile Include="Assets\Script\InGameCanvas.cs" />
+    <Compile Include="Assets\Script\Point.cs" />
     <Compile Include="Assets\Script\RopeController.cs" />
+    <Compile Include="Assets\Script\RopeSound.cs" />
     <Compile Include="Assets\Script\whooshSound.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/UnityProjects/Unity3D/FireRides/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

@@ -47,10 +47,8 @@ MonoBehaviour:
   ball: {fileID: 0}
   initialSwingingSpeed: 12
   initialSwingingDistance: 40
-  rangeOfAim: 100
-  lineRenderer: {fileID: 4320664284957265494}
   gameOver: 0
-  teeterTime: 2
+  lineRenderer: {fileID: 4320664284957265494}
 --- !u!120 &4320664284957265494
 LineRenderer:
   m_ObjectHideFlags: 0

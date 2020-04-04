@@ -117,7 +117,7 @@ public class RopeController : MonoBehaviour
             firstRope.damper = 30f;
             firstRope.enableCollision = true;
             firstRope.connectedAnchor = hitForBeginning.point;
-            firstRope.spring = 0f;
+            firstRope.spring = 1.5f;
             GameObject.DestroyImmediate(rope);
             rope = firstRope;
             firstRopeConnected = true;
@@ -162,7 +162,7 @@ public class RopeController : MonoBehaviour
     {
         SpringJoint newRope = ball.AddComponent<SpringJoint>();
         newRope.autoConfigureConnectedAnchor = false;
-        newRope.spring = 1.5f;//mesafe başına çekim gücü
+        newRope.spring = 2.5f;//mesafe başına çekim gücü
         newRope.damper = 50f;//salınımı kesmeye yarar
         newRope.enableCollision = true;
         newRope.connectedAnchor = hit.point;

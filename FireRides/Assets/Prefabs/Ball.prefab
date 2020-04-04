@@ -9578,6 +9578,7 @@ GameObject:
   - component: {fileID: 8238415830453800711}
   - component: {fileID: 8238415830453800708}
   - component: {fileID: 8238415830453800706}
+  - component: {fileID: 1871491039}
   m_Layer: 9
   m_Name: Ball
   m_TagString: Untagged
@@ -9690,12 +9691,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballSpeed: 100
   cameraHolder: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: d3ba754488e7d3544a07b040069ac5c7, type: 3}
+  volumeOfDeath: 1
   wallTop: {fileID: 5845321258190429859, guid: 99a678e8f3f185445bbe043d1da12477, type: 3}
   wallBottom: {fileID: 2510896187445427553, guid: bea72c4d318054e4098aee6af305b76c,
     type: 3}
   wallFloor: {fileID: 4981302564368158795, guid: 1876f48e4a60645458a14576434398eb,
     type: 3}
+  wallMaterialBlue: {fileID: 2100000, guid: 608ac9703442d1d4ebc5b985a02eaddc, type: 2}
   wallNumber: 100
-  wallPositionTop: {x: 0, y: 0, z: 0}
-  wallPositionBottom: {x: 0, y: 0, z: 0}
-  wallPositionFloor: {x: 0, y: 0, z: 0}
+  circle: {fileID: 4809931660606069256, guid: b200a8a693259fa408f6618ba7965c0e, type: 3}
+--- !u!122 &1871491039
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8238415830453800709}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278291704
+  m_Size: 1.7

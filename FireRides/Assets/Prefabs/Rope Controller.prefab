@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 0}
-  targetTransform: {fileID: 0}
+  initialSwingingSpeed: 12
+  initialSwingingDistance: 40
   rangeOfAim: 100
-  maxRopeFrameCount: 50
   lineRenderer: {fileID: 4320664284957265494}
+  gameOver: 0
+  teeterTime: 2
 --- !u!120 &4320664284957265494
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -98,7 +100,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.23200417
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -138,7 +140,7 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 0
+    numCapVertices: 90
     alignment: 0
     textureMode: 0
     shadowBias: 0.5

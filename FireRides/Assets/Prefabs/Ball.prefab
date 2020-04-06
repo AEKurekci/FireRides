@@ -115,7 +115,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.5
+      scalar: 1
       minScalar: 0.5
       maxCurve:
         serializedVersion: 2
@@ -600,7 +600,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 400
+    maxNumParticles: 600
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -9689,7 +9689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf6e518dadf252499ee8171d619ff8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballSpeed: 100
+  ballSpeed: 125
   cameraHolder: {fileID: 0}
   deathSound: {fileID: 8300000, guid: d3ba754488e7d3544a07b040069ac5c7, type: 3}
   volumeOfDeath: 1
@@ -9699,7 +9699,7 @@ MonoBehaviour:
   wallFloor: {fileID: 4981302564368158795, guid: 1876f48e4a60645458a14576434398eb,
     type: 3}
   wallMaterialBlue: {fileID: 2100000, guid: 608ac9703442d1d4ebc5b985a02eaddc, type: 2}
-  wallNumber: 100
+  wallNumber: 25
   circle: {fileID: 4809931660606069256, guid: b200a8a693259fa408f6618ba7965c0e, type: 3}
 --- !u!122 &1871491039
 Halo:
@@ -9711,5 +9711,5 @@ Halo:
   m_Enabled: 1
   m_Color:
     serializedVersion: 2
-    rgba: 4278291704
-  m_Size: 1.7
+    rgba: 4278300664
+  m_Size: 1.81

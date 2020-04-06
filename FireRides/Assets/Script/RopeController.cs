@@ -45,6 +45,7 @@ public class RopeController : MonoBehaviour
                 if (aim.transform != null)
                 {
                     Sling(aim);
+                    FindObjectOfType<RopeSound>().gameObject.GetComponent<AudioSource>().Play();
                     FindObjectOfType<whooshSound>().gameObject.GetComponent<AudioSource>().Play();
                 }
             }
@@ -57,11 +58,11 @@ public class RopeController : MonoBehaviour
                 GameObject.DestroyImmediate(rope);
                 rigidBodyOfBall.useGravity = true;
                 rigidBodyOfBall.drag = .5f;
-                origin = ball.transform.position;
+                
                 FindObjectOfType<whooshSound>().gameObject.GetComponent<AudioSource>().Stop();
             }
         }
-        
+        origin = ball.transform.position;
 
     }
     private void FixedUpdate()
@@ -132,6 +133,8 @@ public class RopeController : MonoBehaviour
             FindObjectOfType<GameOverCanvas>().GetComponent<Canvas>().enabled = false;
             FindObjectOfType<GameCanvas>().GetComponent<Canvas>().enabled = false;
             FindObjectOfType<InGameCanvas>().GetComponent<Canvas>().enabled = true;
+            FindObjectOfType<PointDisplay>().TakePosition();
+            FindObjectOfType<Motion>().TakePosition();
         }
         else
         {
@@ -147,9 +150,9 @@ public class RopeController : MonoBehaviour
         Vector3 targetPos = new Vector3(aim.transform.position.x,
                                         aim.transform.position.y - aim.transform.localScale.y/2,
                                         aim.transform.position.z);
-        Vector3 direction = targetPos - origin;
+        Vector3 directionOfRope = targetPos - origin;
         RaycastHit hit;
-        Physics.Raycast(origin, direction, out hit, Mathf.Infinity, layerMask);
+        Physics.Raycast(origin, directionOfRope, out hit, Mathf.Infinity, layerMask);
         if (hit.collider != null)
         {
             rigidBodyOfBall.useGravity = false;
@@ -162,8 +165,8 @@ public class RopeController : MonoBehaviour
     {
         SpringJoint newRope = ball.AddComponent<SpringJoint>();
         newRope.autoConfigureConnectedAnchor = false;
-        newRope.spring = 2.5f;//mesafe başına çekim gücü
-        newRope.damper = 50f;//salınımı kesmeye yarar
+        newRope.spring = 4.5f;//mesafe başına çekim gücü
+        newRope.damper = 25f;//salınımı kesmeye yarar
         newRope.enableCollision = true;
         newRope.connectedAnchor = hit.point;
         GameObject.DestroyImmediate(rope);

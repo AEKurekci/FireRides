@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6183268933333466185}
   - component: {fileID: 6183268933333466551}
   - component: {fileID: 6183268933333466184}
+  - component: {fileID: 141485823}
   m_Layer: 5
   m_Name: txtScore
   m_TagString: Untagged
@@ -77,3 +78,15 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!114 &141485823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6183268933333466186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb637d31f38e65241bb45d68a3ce32b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

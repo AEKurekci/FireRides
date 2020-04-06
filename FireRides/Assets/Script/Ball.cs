@@ -21,15 +21,17 @@ public class Ball : MonoBehaviour
     Vector3 wallPositionBottom;
     Vector3 wallPositionFloor;
     private float startingPointZ;
+    private float hardnessTop = 0f;
     [Header("Circle")]
     [SerializeField] GameObject circle;
+
     
 
     // Start is called before the first frame update
     void Start()
     {
         cameraHolder = Camera.main.transform.parent;
-        wallPositionTop = new Vector3(-1.5f, 70f, 156);
+        wallPositionTop = new Vector3(-1.5f, 75f, 156);
         wallPositionBottom = new Vector3(-1.5f, -70f, 156);
         wallPositionFloor = new Vector3(-450f, -83f, 156);
         BuildWalls(wallTop,wallBottom,wallFloor, circle);
@@ -46,13 +48,25 @@ public class Ball : MonoBehaviour
         {
             BuildWalls(wallTop, wallBottom, wallFloor, circle);
             startingPointZ = transform.position.z;
+            if(hardnessTop > -10)
+            {
+                hardnessTop -= 0.5f;
+            }
         }
         CheckViewFinder();
     }
 
     private void CheckViewFinder()
     {
-        
+        Wall[] walls = FindObjectsOfType<Wall>();
+        int lenght = walls.Length;
+        for(int i = 0; i < lenght; i++)
+        {
+            if(walls[i].gameObject.transform.position.z < (transform.position.z - 50f))
+            {
+                Destroy(walls[i].gameObject);
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -100,15 +114,18 @@ public class Ball : MonoBehaviour
         float randomTopY;
         Vector3 tempWallTop = wallPositionTop;
         Vector3 tempWallBottom = wallPositionBottom;
+        //direction:random value; up: 0 straight: 1 down: 2 
+        int directionRandom = (int)Random.Range(0f,3f);
+        float directionOfBuilding = DefineDirection(directionRandom);
+        float tempDirection = directionOfBuilding;
         for (int i = 0; i < wallNumber; i++)
         {
-            randomTopY = Random.Range(-10f, 25f);
-            randomBottomY = Random.Range(-25f, 10f);
             //duvarın z kordinatı doğrultusunda bitişik bir şekilde ilerlemesi için
-            wallPositionTop.z += up.transform.localScale.z;
-            wallPositionBottom.z += down.transform.localScale.z;
-            wallPositionFloor.z += floor.transform.localScale.z;
+            MoveAlongZ(up, down, floor);
+
             //rastgele y değeri ile duvarın yüksekliği değiştirilir.
+            randomTopY = Random.Range(-10f, 20f) + hardnessTop + directionOfBuilding;
+            randomBottomY = Random.Range(-20f, 10f) + directionOfBuilding;            
             wallPositionTop.y += randomTopY;
             wallPositionBottom.y += randomBottomY;
             wallPositionFloor.y += randomBottomY;
@@ -116,24 +133,60 @@ public class Ball : MonoBehaviour
             GameObject upO = Instantiate(up, wallPositionTop, Quaternion.identity);
             GameObject downO = Instantiate(down, wallPositionBottom, Quaternion.identity);
             GameObject floorO = Instantiate(floor, wallPositionFloor, Quaternion.identity);
-            //renk değişimi
             if (i % 2 == 0)
             {
-                upO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
-                downO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
-                floorO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
+                //renk değişimi
+                ChangeColors(upO, downO, floorO);
             }
             if (i % 15 == 0 && i != 0)
             {
-                Debug.Log(i);
-                wallPositionTop.y = 7f;
-                Instantiate(circle, wallPositionTop, Quaternion.identity);
+                //15 duvarda bir halka oluşturuldu
+                CreateCircle(circle);
             }
             //duvarın y değerleri geri getirilir
-            wallPositionBottom.y = tempWallBottom.y;
-            wallPositionFloor.y = tempWallBottom.y;
-            wallPositionTop.y = tempWallTop.y;
+            wallPositionBottom.y = tempWallBottom.y + directionOfBuilding;
+            wallPositionFloor.y = tempWallBottom.y + directionOfBuilding;
+            wallPositionTop.y = tempWallTop.y + directionOfBuilding;
+            directionOfBuilding += tempDirection;
         }
+    }
+
+    private void CreateCircle(GameObject circle)
+    {
+        Vector3 circlePos = new Vector3(wallPositionTop.x, (wallPositionTop.y + wallPositionBottom.y) / 2, wallPositionTop.z);
+        Instantiate(circle, circlePos, Quaternion.identity);
+    }
+
+    private void MoveAlongZ(GameObject up, GameObject down, GameObject floor)
+    {
+        wallPositionTop.z += up.transform.localScale.z;
+        wallPositionBottom.z += down.transform.localScale.z;
+        wallPositionFloor.z += floor.transform.localScale.z;
+    }
+
+    private void ChangeColors(GameObject upO, GameObject downO, GameObject floorO)
+    {
+        upO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
+        downO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
+        floorO.GetComponent<MeshRenderer>().material = wallMaterialBlue;
+    }
+
+    private float DefineDirection(int randDir)
+    {
+        float directionOfBuilding = 0f;
+        switch (randDir)
+        {
+            case 0:
+                directionOfBuilding = .5f;
+                break;
+            case 1:
+                directionOfBuilding = 0f;
+                break;
+            case 2:
+                directionOfBuilding = -.5f;
+                break;
+        }
+        return directionOfBuilding;
     }
 
     private void CameraMovement()

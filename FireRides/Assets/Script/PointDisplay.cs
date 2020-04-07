@@ -6,8 +6,12 @@ using UnityEngine.UI;
 
 public class PointDisplay : MonoBehaviour
 {
+    /*
+     *textSpeed: It defines the point text speed and takes a value between 0.1f and 1f
+     * enterCircle: If player enters the collider of circle it will be true
+      */
     Text txtPoint;
-    [SerializeField] [Range(0, 1)] float textSpeed = 1f;
+    [SerializeField] [Range(0.1f, 1f)] float textSpeed = 1f;
     Coroutine moveCor;
     Vector3 textPos;
     bool enterCircle = false;

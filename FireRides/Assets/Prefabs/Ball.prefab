@@ -9691,7 +9691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballSpeed: 125
   cameraHolder: {fileID: 0}
-  deathSound: {fileID: 8300000, guid: d3ba754488e7d3544a07b040069ac5c7, type: 3}
+  deathSound: {fileID: 8300000, guid: 93babd5718c4eab439aa6484bf2c6f10, type: 3}
   volumeOfDeath: 1
   wallTop: {fileID: 5845321258190429859, guid: 99a678e8f3f185445bbe043d1da12477, type: 3}
   wallBottom: {fileID: 2510896187445427553, guid: bea72c4d318054e4098aee6af305b76c,

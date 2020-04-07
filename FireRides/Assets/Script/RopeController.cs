@@ -6,6 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class RopeController : MonoBehaviour
 {
+    /*
+     * ball: the player object
+     * initialSwingingSpeed: It specify the speed of ball swinging before starting game
+     * initialSwingingDistance: It specify the distance of ball swinging before starting game
+     * ballSpeed: It specifies speed of ball in running game
+     * rigidBodyOfBall: It keeps rigidbody of ball and exists for future physical activities
+     * origin: It keeps position of ball when player wants to sling. Linerenderer draws a line from this position.(source value of line)
+     * rope: it keeps SpringJoint element
+     * layerMask: It distinguishes wall and ball object to avoid connect ball itself(8 is layer of wall)
+     */
     [Header("Ball")]
     public GameObject ball;
     [SerializeField] float initialSwingingSpeed = 10f;
@@ -38,7 +48,7 @@ public class RopeController : MonoBehaviour
     {
         if (gameStarted && !gameOver)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit aim;
                 Physics.Raycast(origin, transform.forward + transform.up, out aim,Mathf.Infinity,layerMask);
@@ -49,11 +59,11 @@ public class RopeController : MonoBehaviour
                     FindObjectOfType<whooshSound>().gameObject.GetComponent<AudioSource>().Play();
                 }
             }
-            else if (Input.GetKey(KeyCode.Space) && rope != null)
+            else if (Input.GetMouseButton(0) && rope != null)
             {
                 BallForce();
             }
-            else if (Input.GetKeyUp(KeyCode.Space))
+            else if (Input.GetMouseButtonUp(0))
             {
                 GameObject.DestroyImmediate(rope);
                 rigidBodyOfBall.useGravity = true;
@@ -96,7 +106,7 @@ public class RopeController : MonoBehaviour
         }
         if (gameOver)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(0))
             {
                 RestartGame();
                 FindObjectOfType<GameOverCanvas>().gameObject.GetComponent<Canvas>().enabled = false;
@@ -104,7 +114,9 @@ public class RopeController : MonoBehaviour
             rigidBodyOfBall.constraints = RigidbodyConstraints.FreezeAll;
         }
     }
-
+    /*
+     * It connects first rope before starting
+     */
     private void FirstRope()
     {
         rigidBodyOfBall.useGravity = false;
@@ -124,10 +136,12 @@ public class RopeController : MonoBehaviour
             firstRopeConnected = true;
         }
     }
-
+    /*
+     * It swings ball until game starts
+     */
     private void Teeter()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
             gameStarted = true;
             FindObjectOfType<GameOverCanvas>().GetComponent<Canvas>().enabled = false;
@@ -144,7 +158,9 @@ public class RopeController : MonoBehaviour
         }
         
     }
-
+    /*
+     * When player touch on screen, this method is called and the rope is slinged to wall
+     */
     private void Sling(RaycastHit aim)
     {
         Vector3 targetPos = new Vector3(aim.transform.position.x,
@@ -161,6 +177,9 @@ public class RopeController : MonoBehaviour
             NewRope(hit);
         }
     }
+    /*
+     * It creates a rope(SpringJoint)
+     */
     private void NewRope(RaycastHit hit)
     {
         SpringJoint newRope = ball.AddComponent<SpringJoint>();
@@ -172,6 +191,9 @@ public class RopeController : MonoBehaviour
         GameObject.DestroyImmediate(rope);
         rope = newRope;
     }
+    /*
+     * During player touching on screen, this function is called to move player
+     */
     private void BallForce()
     {
         rigidBodyOfBall.AddForce(Vector3.Cross(-transform.right, (origin - rope.connectedAnchor).normalized) * ballSpeed * Time.deltaTime);

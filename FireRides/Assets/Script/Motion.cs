@@ -7,10 +7,17 @@ using TMPro;
 
 public class Motion : MonoBehaviour
 {
+    /*
+     * txtPoint: Text element of point
+     * textSpeed: Speed of text movement
+     * textPos: The actual position of text element
+     * moveCor: movement coroutine
+     * enterCircle: If ball enters the circle, it will turn true
+     */
     TextMeshProUGUI txtPoint;
     [SerializeField] [Range(0, 1)] float textSpeed = 1f;
-    Coroutine moveCor;
     Vector3 textPos;
+    Coroutine moveCor;
     bool enterCircle = false;
     // Start is called before the first frame update
     void Start()
